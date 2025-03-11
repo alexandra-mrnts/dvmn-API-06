@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from pathlib import Path
 from urllib.parse import urlsplit
 from requests.exceptions import HTTPError
+from telegram.error import TelegramError, Unauthorized
 from random import randint
 from download_web_image import download_image
 from post_image_tg import post_image
@@ -37,17 +38,30 @@ def main():
     except HTTPError as err:
         print(f'Не удалось загрузить картинку. Ошибка: {err}')
         return
+   
     image_name = get_filename(image_url)
     image_path = Path(image_name)
-    download_image(url=image_url, filepath=image_path)
-
+    try:
+        download_image(url=image_url, filepath=image_path)
+    except HTTPError as err:
+        print(f'Не удалось загрузить картинку. Ошибка: {err}')
+        return
+    
     chat_id = os.environ['TG_CHAT_ID']
     token = os.environ['TG_TOKEN']
-    post_image(filepath=image_path,
-               caption=comment,
-               chat_id=chat_id,
-               token=token)
-    image_path.unlink()
+    try:
+        post_image(filepath=image_path,
+                   caption=comment,
+                   chat_id=chat_id,
+                   token=token)
+    except Unauthorized:
+        print(f'Не удалось опубликовать картинку. Неверный токен.')
+        return
+    except TelegramError as err:
+        print(f'Не удалось опубликовать картинку. Ошибка: {err.message}')
+        return
+    finally:
+        image_path.unlink()
 
 
 if __name__ == '__main__':
