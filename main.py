@@ -5,7 +5,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 from requests.exceptions import HTTPError
 from random import randint
-from load_web_image import load_image
+from download_web_image import download_image
 from post_image_tg import post_image
 
 
@@ -39,7 +39,7 @@ def main():
         return
     image_name = get_filename(image_url)
     image_path = Path(image_name)
-    load_image(url=image_url, filepath=image_path)
+    download_image(url=image_url, filepath=image_path)
 
     chat_id = os.environ['TG_CHAT_ID']
     token = os.environ['TG_TOKEN']
