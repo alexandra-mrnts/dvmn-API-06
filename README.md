@@ -17,6 +17,11 @@ TG_CHAT_ID = '@mychat'
 TG_TOKEN = '7219856276:AAGKGrSZwgpZf74JGEIBlAjiAosaVjBf4Tw'
 ```
 
+### How to use
+Run the following command:
+```
+python main.py
+```
 
 ### Project Goals
 
