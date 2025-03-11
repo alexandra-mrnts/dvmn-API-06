@@ -41,8 +41,8 @@ def main():
     image_path = Path(image_name)
     load_image(url=image_url, filepath=image_path)
 
-    chat_id = os.getenv('TG_CHAT_ID')
-    token = os.getenv('TG_TOKEN')
+    chat_id = os.environ['TG_CHAT_ID']
+    token = os.environ['TG_TOKEN']
     post_image(filepath=image_path,
                caption=comment,
                chat_id=chat_id,
