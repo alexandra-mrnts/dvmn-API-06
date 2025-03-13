@@ -13,11 +13,6 @@ from post_image_tg import post_image
 LAST_COMICS_NUMBER = 3000
 
 
-def get_filename(url):
-    path = Path(urlsplit(url).path)
-    return path.name
-
-
 def fetch_comics_info(comics_num=None):
     if comics_num:
         url = f'https://xkcd.com/{comics_num}/info.0.json'
@@ -38,8 +33,8 @@ def main():
     except HTTPError as err:
         print(f'Не удалось загрузить картинку. Ошибка: {err}')
         return
-   
-    image_name = get_filename(image_url)
+    
+    image_name = Path(urlsplit(image_url).path).name
     image_path = Path(image_name)
     try:
         download_image(url=image_url, filepath=image_path)
